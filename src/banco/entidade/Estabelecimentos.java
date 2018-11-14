@@ -6,9 +6,7 @@
 package banco.entidade;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -56,8 +52,6 @@ public class Estabelecimentos implements Serializable {
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     @ManyToOne(optional = false)
     private Usuarios idUsuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEstabelecimento")
-    private Collection<Clientes> clientesCollection;
 
     public Estabelecimentos() {
     }
@@ -112,15 +106,6 @@ public class Estabelecimentos implements Serializable {
 
     public void setIdUsuario(Usuarios idUsuario) {
         this.idUsuario = idUsuario;
-    }
-
-    @XmlTransient
-    public Collection<Clientes> getClientesCollection() {
-        return clientesCollection;
-    }
-
-    public void setClientesCollection(Collection<Clientes> clientesCollection) {
-        this.clientesCollection = clientesCollection;
     }
 
     @Override

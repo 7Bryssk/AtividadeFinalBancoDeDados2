@@ -42,7 +42,7 @@ public class Dadosgerais implements Serializable {
     @Column(name = "idDadoGeral")
     private Integer idDadoGeral;
     @Column(name = "inativo")
-    private Short inativo;
+    private boolean inativo;
     @Column(name = "pertenece_a_classe")
     private String perteneceAClasse;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDadoGeral")
@@ -51,8 +51,6 @@ public class Dadosgerais implements Serializable {
     private Collection<Estabelecimentos> estabelecimentosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDadoGeral")
     private Collection<Enderecos> enderecosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDadoGeral")
-    private Collection<Clientes> clientesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDadoGeral")
     private Collection<Usuarios> usuariosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDadoGeral")
@@ -73,11 +71,11 @@ public class Dadosgerais implements Serializable {
         this.idDadoGeral = idDadoGeral;
     }
 
-    public Short getInativo() {
+    public boolean getInativo() {
         return inativo;
     }
 
-    public void setInativo(Short inativo) {
+    public void setInativo(boolean inativo) {
         this.inativo = inativo;
     }
 
@@ -114,15 +112,6 @@ public class Dadosgerais implements Serializable {
 
     public void setEnderecosCollection(Collection<Enderecos> enderecosCollection) {
         this.enderecosCollection = enderecosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Clientes> getClientesCollection() {
-        return clientesCollection;
-    }
-
-    public void setClientesCollection(Collection<Clientes> clientesCollection) {
-        this.clientesCollection = clientesCollection;
     }
 
     @XmlTransient
