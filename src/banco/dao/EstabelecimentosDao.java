@@ -16,6 +16,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -43,6 +49,8 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
                 + "   razaoSocial                 VARCHAR(50),"
                 + "   cnpj                        VARCHAR(50),"
                 + "   nomeFantasia                VARCHAR(50),"
+                + "   IdUsuario                   INTEGER,"
+                + "   idDadoGeral                 INTEGER,"
                 + "   FOREIGN KEY (IdUsuario) REFERENCES usuarios(IdUsuario),"
                 + "   FOREIGN KEY (idDadoGeral) REFERENCES dadosgerais(idDadoGeral),"
                 + "   PRIMARY KEY (idEstabelecimento))";
@@ -206,6 +214,49 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
         } finally {
             close(conn, stmt, null);
         }
+    }
+    
+    public TableModel getTabelaEstabelecimentos() {
+        UsuarioLogado user = new UsuarioLogado();
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        modelo.addColumn("Razão Social");
+        modelo.addColumn("Nome Fantasia");
+        modelo.addColumn("CNPJ");
+
+        List<Estabelecimentos> lista = new ArrayList<>();
+        Connection conn = DbConnection.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM estabelecimentos WHERE IdUsuario = ?");
+            stmt.setInt(1, user.getIdusuario());
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(getEstabelecimentoFromRS(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao obter Estabelecimentos do Usuario.", e);
+        } finally {
+            close(conn, stmt, rs);
+        }
+        
+        for (Estabelecimentos estabelecimento : lista) {
+            
+            Object[] linha = {
+                estabelecimento.getRazaoSocial(),
+                estabelecimento.getNomeFantasia(),
+                estabelecimento.getCnpj()
+            };
+    
+            
+            modelo.addRow(linha);
+
+        }
+        return modelo;
     }
     
 }

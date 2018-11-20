@@ -36,12 +36,13 @@ public class UsuariosDao implements Dao<Usuarios>{
     }
 
     private void createTable() throws SQLException {
-        String sqlCreate = "CREATE TABLE IF NOT EXISTS usuarios"
+        final String sqlCreate = "CREATE TABLE IF NOT EXISTS usuarios"
                 + "  (idUsuario           INTEGER,"
                 + "   nome                VARCHAR(50),"
                 + "   login               VARCHAR(50),"
                 + "   senha               VARCHAR(16),"
                 + "   cpf                 VARCHAR(50),"
+                + "   idDadoGeral         INTEGER,"
                 + "   FOREIGN KEY (idDadoGeral) REFERENCES dadosgerais(idDadoGeral),"
                 + "   PRIMARY KEY (idUsuario))";
 
@@ -51,6 +52,26 @@ public class UsuariosDao implements Dao<Usuarios>{
         stmt.execute(sqlCreate);
 
         close(conn, stmt, null);
+    }
+    public int ChecarLogin(Usuarios usu) throws Exception{
+        
+        String sql="select * from usuarios u where u.login = '" + usu.getLogin() + 
+                "' and u.senha = '" + usu.getSenha() + "'";
+        
+        java.sql.PreparedStatement sqlPrep = DbConnection.getConnection().prepareStatement(sql);
+        ResultSet rs = sqlPrep.executeQuery();
+        
+        rs.first();
+        
+        if(rs.getRow() == 0){            
+            return 0;
+        }else{
+            UsuarioLogado user = new UsuarioLogado();
+            
+            user.setIdusuario(rs.getInt("idUsuario"));
+            user.setNome(rs.getString("nome"));
+            return 1;
+        }
     }
 
     private static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
