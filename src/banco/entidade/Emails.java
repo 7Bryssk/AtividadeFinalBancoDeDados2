@@ -42,7 +42,7 @@ public class Emails implements Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "inativo")
-    private Short inativo;
+    private boolean inativo;
     @JoinColumn(name = "idDadoGeral", referencedColumnName = "idDadoGeral")
     @ManyToOne(optional = false)
     private Dadosgerais idDadoGeral;
@@ -70,11 +70,11 @@ public class Emails implements Serializable {
         this.email = email;
     }
 
-    public Short getInativo() {
+    public boolean getInativo() {
         return inativo;
     }
 
-    public void setInativo(Short inativo) {
+    public void setInativo(boolean inativo) {
         this.inativo = inativo;
     }
 

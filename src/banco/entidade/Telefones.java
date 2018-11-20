@@ -42,7 +42,7 @@ public class Telefones implements Serializable {
     @Column(name = "telefone")
     private String telefone;
     @Column(name = "inativo")
-    private Short inativo;
+    private boolean inativo;
     @JoinColumn(name = "idDadoGeral", referencedColumnName = "idDadoGeral")
     @ManyToOne(optional = false)
     private Dadosgerais idDadoGeral;
@@ -70,11 +70,11 @@ public class Telefones implements Serializable {
         this.telefone = telefone;
     }
 
-    public Short getInativo() {
+    public boolean getInativo() {
         return inativo;
     }
 
-    public void setInativo(Short inativo) {
+    public void setInativo(boolean inativo) {
         this.inativo = inativo;
     }
 

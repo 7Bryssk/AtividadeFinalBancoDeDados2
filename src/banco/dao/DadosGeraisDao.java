@@ -37,7 +37,7 @@ public class DadosGeraisDao implements Dao<Dadosgerais> {
     private void createTable() throws SQLException {
         String sqlCreate = "CREATE TABLE IF NOT EXISTS dadosgerais"
                 + "  (idDadoGeral           INTEGER,"
-                + "   inativo               tinyint(4),"
+                + "   inativo               TINYINT(4),"
                 + "   pertenece_a_classe    VARCHAR(50),"
                 + "   PRIMARY KEY (idDadoGeral))";
 
