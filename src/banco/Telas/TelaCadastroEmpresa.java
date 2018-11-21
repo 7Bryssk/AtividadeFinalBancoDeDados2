@@ -23,14 +23,13 @@ public class TelaCadastroEmpresa extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadastroEmpresa
      */
-    
     Estabelecimentos est = new Estabelecimentos();
     EstabelecimentosDao estDao = new EstabelecimentosDao();
     UsuarioLogado user = new UsuarioLogado();
-    
+
     public TelaCadastroEmpresa(int id) {
         initComponents();
-        if (id!=0){
+        if (id != 0) {
             est = estDao.getByKey(id);
             txtRazao.setText(est.getRazaoSocial());
             txtNome.setText(est.getNomeFantasia());
@@ -144,36 +143,47 @@ public class TelaCadastroEmpresa extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        TelaPrincipal abrir = new TelaPrincipal();
-        abrir.setVisible(true);
-        dispose();
+        if (est.getIdEstabelecimento() == null) {
+            TelaPrincipal abrir = new TelaPrincipal();
+            abrir.setVisible(true);
+            dispose();
+        }else{
+            TelaDadosEmpresa abrir = new TelaDadosEmpresa(est.getIdEstabelecimento());
+            abrir.setVisible(true);
+            dispose();
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+
         est.setRazaoSocial(txtRazao.getText());
         est.setNomeFantasia(txtNome.getText());
         est.setCnpj(txtCnpj.getText());
-        
-        if(est.getIdUsuario()!=null){
+
+        if (est.getIdUsuario() != null) {
             estDao.update(est);
-        }else{
+            JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+            TelaDadosEmpresa abrir = new TelaDadosEmpresa(est.getIdEstabelecimento());
+            abrir.setVisible(true);
+            dispose();
+        } else {
             Dadosgerais dados = new Dadosgerais();
             dados.setInativo(false);
             dados.setPerteneceAClasse("estabelecimento");
             DadosGeraisDao dadosDao = new DadosGeraisDao();
             dadosDao.insert(dados);
-            
+
             Usuarios usuario = new Usuarios();
             UsuariosDao ususarioDao = new UsuariosDao();
-            usuario=ususarioDao.getByKey(user.getIdusuario());
-            
+            usuario = ususarioDao.getByKey(user.getIdusuario());
+
             est.setIdDadoGeral(dados);
             est.setIdUsuario(usuario);
-            
+
             estDao.insert(est);
-            
+
             JOptionPane.showMessageDialog(null, "Registro inserido com sucesso!");
             TelaPrincipal abrir = new TelaPrincipal();
             abrir.setVisible(true);

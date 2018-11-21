@@ -16,10 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -32,7 +28,7 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
     private static final String GET_BY_ID = "SELECT * FROM estabelecimentos WHERE idEstabelecimento = ?";
     private static final String GET_ALL = "SELECT * FROM estabelecimentos";
     private static final String INSERT = "INSERT INTO estabelecimentos (razaoSocial, cnpj, nomeFantasia, IdUsuario, idDadoGeral) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE estabelecimentos SET razaoSocial = ?, cnpj = ?, nomeFantasia = ?, IdUsuario = ?, idDadoGeral = ?,  WHERE idEstabelecimento = ?";
+    private static final String UPDATE = "UPDATE estabelecimentos SET razaoSocial = ?, cnpj = ?, nomeFantasia = ?, IdUsuario = ?, idDadoGeral = ?  WHERE idEstabelecimento = ?";
     private static final String DELETE = "DELETE FROM estabelecimentos WHERE idEstabelecimento = ?";
 
     public EstabelecimentosDao() {
@@ -220,6 +216,7 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
         UsuarioLogado user = new UsuarioLogado();
         DefaultTableModel modelo = new DefaultTableModel();
 
+        modelo.addColumn("Código");
         modelo.addColumn("Razão Social");
         modelo.addColumn("Nome Fantasia");
         modelo.addColumn("CNPJ");
@@ -230,7 +227,7 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
         ResultSet rs = null;
 
         try {
-            stmt = conn.prepareStatement("SELECT * FROM estabelecimentos WHERE IdUsuario = ?");
+            stmt = conn.prepareStatement("SELECT * FROM estabelecimentos e, dadosgerais d WHERE e.IdUsuario = ? and e.idDadoGeral=d.idDadoGeral and d.inativo='true'");
             stmt.setInt(1, user.getIdusuario());
             rs = stmt.executeQuery();
 
@@ -247,6 +244,7 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
         for (Estabelecimentos estabelecimento : lista) {
             
             Object[] linha = {
+                estabelecimento.getIdEstabelecimento(),
                 estabelecimento.getRazaoSocial(),
                 estabelecimento.getNomeFantasia(),
                 estabelecimento.getCnpj()

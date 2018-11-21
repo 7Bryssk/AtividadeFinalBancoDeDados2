@@ -23,8 +23,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         EmpresasDoUsuario();
     }
-    
+
     UsuarioLogado user = new UsuarioLogado();
+    int id;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,9 +71,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             }
         ));
+        tabEstabelecimentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabEstabelecimentosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabEstabelecimentos);
 
         btnEmpresas.setText("Ver Dados Empresa");
+        btnEmpresas.setEnabled(false);
+        btnEmpresas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpresasActionPerformed(evt);
+            }
+        });
 
         olaUser.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         olaUser.setText("Olá");
@@ -149,7 +161,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:UsuarioLogado user = new UsuarioLogado();
-        olaUser.setText("Olá "+user.getNome()+"!");
+        olaUser.setText("Olá " + user.getNome() + "!");
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -158,6 +170,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
         abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnEmpresasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpresasActionPerformed
+        // TODO add your handling code here:
+        TelaDadosEmpresa abrir = new TelaDadosEmpresa(id);
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnEmpresasActionPerformed
+
+    private void tabEstabelecimentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabEstabelecimentosMouseClicked
+        // TODO add your handling code here:
+        int linha = tabEstabelecimentos.getSelectedRow();
+
+        if (linha > -1) {
+            btnEmpresas.setEnabled(true);
+            id = (int) tabEstabelecimentos.getValueAt(linha, 0);
+        }
+    }//GEN-LAST:event_tabEstabelecimentosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -193,8 +222,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void EmpresasDoUsuario(){
+
+    public void EmpresasDoUsuario() {
         EstabelecimentosDao estDao = new EstabelecimentosDao();
         try {
             tabEstabelecimentos.setModel(estDao.getTabelaEstabelecimentos());
