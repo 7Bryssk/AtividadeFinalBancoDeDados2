@@ -7,6 +7,7 @@ package banco.dao;
 
 import banco.entidade.Dadosgerais;
 import banco.entidade.Emails;
+import banco.entidade.Telefones;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -24,7 +27,7 @@ public class EmailsDao implements Dao<Emails>{
     private static final String GET_BY_ID = "SELECT * FROM emails WHERE idEmail = ?";
     private static final String GET_ALL = "SELECT * FROM emails";
     private static final String INSERT = "INSERT INTO emails (email, inativo, idDadoGeral) VALUES (?, ?, ?)";
-    private static final String UPDATE = "UPDATE emails SET email = ?, inativo = ?, idDadoGeral = ?,  WHERE idEmail = ?";
+    private static final String UPDATE = "UPDATE emails SET email = ?, inativo = ?, idDadoGeral = ?  WHERE idEmail = ?";
     private static final String DELETE = "DELETE FROM emails WHERE idEmail = ?";
 
     public EmailsDao() {
@@ -37,9 +40,10 @@ public class EmailsDao implements Dao<Emails>{
 
     private void createTable() throws SQLException {
         String sqlCreate = "CREATE TABLE IF NOT EXISTS emails"
-                + "  (idEmail                     INTEGER,"
+                + "  (idEmail                  INTEGER NOT NULL AUTO_INCREMENT,"
                 + "   email                    VARCHAR(20),"
-                + "   inativo                     TINYINT(4),"
+                + "   inativo                  TINYINT(4),"
+                + "   idDadoGeral              INTEGER,"
                 + "   FOREIGN KEY (idDadoGeral) REFERENCES dadosgerais(idDadoGeral),"
                 + "   PRIMARY KEY (idEmail))";
 
@@ -138,8 +142,6 @@ public class EmailsDao implements Dao<Emails>{
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        // private static final String INSERT = "INSERT INTO usuarios (nome, login, senha, cpf, idDadoGeral) VALUES (?, ?, ?, ?, ?)";
-        
         try {
             stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, email.getEmail());
@@ -198,4 +200,42 @@ public class EmailsDao implements Dao<Emails>{
         }
     }
     
+    public TableModel getTabelaEmails(int idDadoGeral) {
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        modelo.addColumn("Código");
+        modelo.addColumn("E-mail");
+
+        List<Emails> lista = new ArrayList<>();
+        Connection conn = DbConnection.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM emails e WHERE e.idDadoGeral = ? and e.inativo='false'");
+            stmt.setInt(1, idDadoGeral);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(getEmailFromRS(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao obter E-mails.", e);
+        } finally {
+            close(conn, stmt, rs);
+        }
+
+        for (Emails email : lista) {
+
+            Object[] linha = {
+                email.getIdEmail(),
+                email.getEmail()
+            };
+
+            modelo.addRow(linha);
+
+        }
+        return modelo;
+    }
 }

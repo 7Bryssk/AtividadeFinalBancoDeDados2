@@ -6,9 +6,11 @@
 package banco.Telas;
 
 import banco.dao.DadosGeraisDao;
+import banco.dao.UsuarioLogado;
 import banco.dao.UsuariosDao;
 import banco.entidade.Dadosgerais;
 import banco.entidade.Usuarios;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,8 +22,23 @@ public class TelaCadastro extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadastro
      */
-    public TelaCadastro() {
+    Usuarios usuario = new Usuarios();
+    UsuariosDao usuDao = new UsuariosDao();
+    Dadosgerais dadosGerais = new Dadosgerais();
+    DadosGeraisDao dgDao = new DadosGeraisDao();
+
+    public TelaCadastro(int id) {
         initComponents();
+        if (id == 0) {
+
+        } else {
+            usuario = usuDao.getByKey(id);
+            txtNome.setText(usuario.getNome());
+            txtLogin.setText(usuario.getLogin());
+            txtSenha.setText(usuario.getSenha());
+            txtCPF.setText(usuario.getCpf());
+        }
+
     }
 
     /**
@@ -140,33 +157,46 @@ public class TelaCadastro extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
-        Dadosgerais dadosGerais = new Dadosgerais();
-        dadosGerais.setInativo(false);
-        dadosGerais.setPerteneceAClasse("Usuario");
-        
-        DadosGeraisDao dgDao = new DadosGeraisDao();
-        
-        dgDao.insert(dadosGerais);
-        
-        Usuarios usuario = new Usuarios();
         usuario.setNome(txtNome.getText());
         usuario.setLogin(txtLogin.getText());
         usuario.setSenha(txtSenha.getText());
         usuario.setCpf(txtCPF.getText());
-        usuario.setIdDadoGeral(dadosGerais);
-        
-        UsuariosDao usuDao = new UsuariosDao();
-        usuDao.insert(usuario);
-        
-        JOptionPane.showMessageDialog(null, "Registro inserido com sucesso!");
-        TelaLogin abrir = new TelaLogin();
-        abrir.setVisible(true);
-        dispose();
+
+        if (usuario.getIdUsuario() != null) {
+            usuDao.update(usuario);
+            JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+
+            UsuarioLogado usulogado = new UsuarioLogado();
+            usulogado.setNome(usuario.getNome());
+
+            TelaPrincipal abrir = new TelaPrincipal();
+            abrir.setVisible(true);
+            dispose();
+        } else {
+            dadosGerais.setInativo(false);
+            dadosGerais.setPerteneceAClasse("Usuario");
+            dgDao.insert(dadosGerais);
+
+            usuario.setIdDadoGeral(dadosGerais);
+            usuDao.insert(usuario);
+
+            JOptionPane.showMessageDialog(null, "Registro inserido com sucesso!");
+            TelaLogin abrir = new TelaLogin();
+            abrir.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        TelaLogin abrir = new TelaLogin();
+
+        JFrame abrir;
+        if (usuario.getIdUsuario() == null) {
+            abrir = new TelaLogin();
+        } else {
+            abrir = new TelaPrincipal();
+        }
+
         abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -201,7 +231,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaCadastro().setVisible(true);
+                new TelaCadastro(0).setVisible(true);
             }
         });
     }

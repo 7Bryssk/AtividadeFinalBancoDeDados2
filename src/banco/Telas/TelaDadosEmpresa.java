@@ -81,8 +81,18 @@ public class TelaDadosEmpresa extends javax.swing.JFrame {
         });
 
         jButton2.setText("Emails");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Telefones");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Endereços");
 
@@ -196,6 +206,20 @@ public class TelaDadosEmpresa extends javax.swing.JFrame {
         dispose();
         
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        TelaTelefones abrir = new TelaTelefones(estabelecimento.getIdEstabelecimento(), "ESTABELECIMENTO");
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        TelaEmails abrir = new TelaEmails(estabelecimento.getIdEstabelecimento(), "ESTABELECIMENTO");
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

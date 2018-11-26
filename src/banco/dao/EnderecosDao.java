@@ -38,7 +38,7 @@ public class EnderecosDao implements Dao<Enderecos>{
 
     private void createTable() throws SQLException {
         String sqlCreate = "CREATE TABLE IF NOT EXISTS enderecos"
-                + "  (idEndereco                INTEGER,"
+                + "  (idEndereco                INTEGER NOT NULL AUTO_INCREMENT,"
                 + "   numero                    VARCHAR(50),"
                 + "   rua                       VARCHAR(50),"
                 + "   bairro                    VARCHAR(50),"

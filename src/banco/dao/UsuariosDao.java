@@ -24,7 +24,7 @@ public class UsuariosDao implements Dao<Usuarios>{
     private static final String GET_BY_ID = "SELECT * FROM usuarios WHERE idUsuario = ?";
     private static final String GET_ALL = "SELECT * FROM usuarios";
     private static final String INSERT = "INSERT INTO usuarios (nome, login, senha, cpf, idDadoGeral) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE usuarios SET nome = ?, login = ?, senha= ?, cpf = ?, idDadoGeral = ?,  WHERE idUsuario = ?";
+    private static final String UPDATE = "UPDATE usuarios SET nome = ?, login = ?, senha= ?, cpf = ?, idDadoGeral = ? WHERE idUsuario = ?";
     private static final String DELETE = "DELETE FROM usuarios WHERE idUsuario = ?";
 
     public UsuariosDao() {
@@ -37,7 +37,7 @@ public class UsuariosDao implements Dao<Usuarios>{
 
     private void createTable() throws SQLException {
         final String sqlCreate = "CREATE TABLE IF NOT EXISTS usuarios"
-                + "  (idUsuario           INTEGER,"
+                + "  (idUsuario           INTEGER NOT NULL AUTO_INCREMENT,"
                 + "   nome                VARCHAR(50),"
                 + "   login               VARCHAR(50),"
                 + "   senha               VARCHAR(16),"

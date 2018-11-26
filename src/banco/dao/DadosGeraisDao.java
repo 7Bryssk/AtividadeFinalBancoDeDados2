@@ -36,7 +36,7 @@ public class DadosGeraisDao implements Dao<Dadosgerais> {
 
     private void createTable() throws SQLException {
         String sqlCreate = "CREATE TABLE IF NOT EXISTS dadosgerais"
-                + "  (idDadoGeral           INTEGER,"
+                + "  (idDadoGeral           INTEGER NOT NULL AUTO_INCREMENT,"
                 + "   inativo               TINYINT(4),"
                 + "   pertenece_a_classe    VARCHAR(50),"
                 + "   PRIMARY KEY (idDadoGeral))";
@@ -147,7 +147,7 @@ public class DadosGeraisDao implements Dao<Dadosgerais> {
                 dadoGeral.setIdDadoGeral(rs.getInt(1));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir dado geral.", e);
+            throw new RuntimeException("Erro ao inserir dado geral. " + e.getMessage(), e);
         } finally {
             close(conn, stmt, rs);
         }

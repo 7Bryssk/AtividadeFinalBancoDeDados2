@@ -41,7 +41,7 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
 
     private void createTable() throws SQLException {
         String sqlCreate = "CREATE TABLE IF NOT EXISTS estabelecimentos"
-                + "  (idEstabelecimento           INTEGER,"
+                + "  (idEstabelecimento           INTEGER NOT NULL AUTO_INCREMENT,"
                 + "   razaoSocial                 VARCHAR(50),"
                 + "   cnpj                        VARCHAR(50),"
                 + "   nomeFantasia                VARCHAR(50),"
@@ -86,7 +86,7 @@ public class EstabelecimentosDao implements Dao<Estabelecimentos>{
         estabelecimento.setCnpj(rs.getString("cnpj"));
         estabelecimento.setNomeFantasia(rs.getString("nomeFantasia"));
         estabelecimento.setIdUsuario(new Usuarios(rs.getInt("IdUsuario")));
-        estabelecimento.setIdDadoGeral(new Dadosgerais(rs.getInt("idEstabelecimento")));
+        estabelecimento.setIdDadoGeral(new Dadosgerais(rs.getInt("idDadoGeral")));
 
         return estabelecimento;
     }

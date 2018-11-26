@@ -162,7 +162,7 @@ public class TelaCadastroEmpresa extends javax.swing.JFrame {
         est.setNomeFantasia(txtNome.getText());
         est.setCnpj(txtCnpj.getText());
 
-        if (est.getIdUsuario() != null) {
+        if (est.getIdEstabelecimento()!= null) {
             estDao.update(est);
             JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
             TelaDadosEmpresa abrir = new TelaDadosEmpresa(est.getIdEstabelecimento());

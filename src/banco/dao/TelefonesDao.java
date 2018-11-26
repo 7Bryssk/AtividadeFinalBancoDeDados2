@@ -14,17 +14,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author Bruno
  */
-public class TelefonesDao implements Dao<Telefones>{
+public class TelefonesDao implements Dao<Telefones> {
 
     private static final String GET_BY_ID = "SELECT * FROM telefones WHERE idTelefone = ?";
     private static final String GET_ALL = "SELECT * FROM telefones";
     private static final String INSERT = "INSERT INTO telefones (telefone, inativo, idDadoGeral) VALUES (?, ?, ?)";
-    private static final String UPDATE = "UPDATE telefones SET telefone = ?, inativo = ?, idDadoGeral = ?,  WHERE idTelefone = ?";
+    private static final String UPDATE = "UPDATE telefones SET telefone = ?, inativo = ?, idDadoGeral = ?  WHERE idTelefone = ?";
     private static final String DELETE = "DELETE FROM telefones WHERE idTelefone = ?";
 
     public TelefonesDao() {
@@ -37,9 +39,10 @@ public class TelefonesDao implements Dao<Telefones>{
 
     private void createTable() throws SQLException {
         String sqlCreate = "CREATE TABLE IF NOT EXISTS telefones"
-                + "  (idTelefone                     INTEGER,"
+                + "  (idTelefone                  INTEGER NOT NULL AUTO_INCREMENT,"
                 + "   telefone                    VARCHAR(20),"
                 + "   inativo                     TINYINT(4),"
+                + "   idDadoGeral                 INTEGER,"
                 + "   FOREIGN KEY (idDadoGeral) REFERENCES dadosgerais(idDadoGeral),"
                 + "   PRIMARY KEY (idTelefone))";
 
@@ -138,8 +141,6 @@ public class TelefonesDao implements Dao<Telefones>{
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        // private static final String INSERT = "INSERT INTO usuarios (nome, login, senha, cpf, idDadoGeral) VALUES (?, ?, ?, ?, ?)";
-        
         try {
             stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, telefone.getTelefone());
@@ -197,5 +198,43 @@ public class TelefonesDao implements Dao<Telefones>{
             close(conn, stmt, null);
         }
     }
-    
+
+    public TableModel getTabelaTelefones(int idDadoGeral) {
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        modelo.addColumn("Código");
+        modelo.addColumn("Telefone");
+
+        List<Telefones> lista = new ArrayList<>();
+        Connection conn = DbConnection.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM telefones t WHERE t.idDadoGeral = ? and t.inativo='false'");
+            stmt.setInt(1, idDadoGeral);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(getTelefoneFromRS(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao obter Telefones.", e);
+        } finally {
+            close(conn, stmt, rs);
+        }
+
+        for (Telefones telefone : lista) {
+
+            Object[] linha = {
+                telefone.getIdTelefone(),
+                telefone.getTelefone()
+            };
+
+            modelo.addRow(linha);
+
+        }
+        return modelo;
+    }
 }

@@ -46,6 +46,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         olaUser = new javax.swing.JLabel();
         seusEstabelecimentos = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -55,8 +56,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         btnEmails.setText("Emails");
+        btnEmails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmailsActionPerformed(evt);
+            }
+        });
 
         btnTelefones.setText("Telefones");
+        btnTelefones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTelefonesActionPerformed(evt);
+            }
+        });
 
         btnEnderecos.setText("Endereços");
 
@@ -99,6 +110,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Alterar Dados");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout btnCadastrarEmpresaLayout = new javax.swing.GroupLayout(btnCadastrarEmpresa);
         btnCadastrarEmpresa.setLayout(btnCadastrarEmpresaLayout);
         btnCadastrarEmpresaLayout.setHorizontalGroup(
@@ -107,21 +125,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(btnCadastrarEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(seusEstabelecimentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(olaUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(btnCadastrarEmpresaLayout.createSequentialGroup()
                         .addGroup(btnCadastrarEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(btnCadastrarEmpresaLayout.createSequentialGroup()
+                                .addComponent(btnEmpresas)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1))
                             .addGroup(btnCadastrarEmpresaLayout.createSequentialGroup()
                                 .addComponent(btnEmails)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnTelefones)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEnderecos))
-                            .addGroup(btnCadastrarEmpresaLayout.createSequentialGroup()
-                                .addComponent(btnEmpresas)
+                                .addComponent(btnEnderecos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))
-                        .addGap(0, 112, Short.MAX_VALUE))
-                    .addComponent(seusEstabelecimentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(olaUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jButton2)))
+                        .addGap(0, 28, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         btnCadastrarEmpresaLayout.setVerticalGroup(
@@ -133,7 +153,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(btnCadastrarEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEmails)
                     .addComponent(btnTelefones)
-                    .addComponent(btnEnderecos))
+                    .addComponent(btnEnderecos)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(seusEstabelecimentos, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -188,6 +209,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tabEstabelecimentosMouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        TelaCadastro abrir = new TelaCadastro(user.getIdusuario());
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnTelefonesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTelefonesActionPerformed
+        // TODO add your handling code here:
+        TelaTelefones abrir = new TelaTelefones(user.getIdusuario(), "USUARIO");
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnTelefonesActionPerformed
+
+    private void btnEmailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmailsActionPerformed
+        // TODO add your handling code here:
+        TelaEmails abrir = new TelaEmails(user.getIdusuario(), "USUARIO");
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnEmailsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -239,6 +281,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnEnderecos;
     private javax.swing.JButton btnTelefones;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel olaUser;
     private javax.swing.JLabel seusEstabelecimentos;
