@@ -70,6 +70,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         btnEnderecos.setText("Endereços");
+        btnEnderecos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnderecosActionPerformed(evt);
+            }
+        });
 
         tabEstabelecimentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -229,6 +234,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnEmailsActionPerformed
+
+    private void btnEnderecosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnderecosActionPerformed
+        // TODO add your handling code here:
+        TelaEnderecos abrir = new TelaEnderecos(user.getIdusuario(), "USUARIO");
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnEnderecosActionPerformed
 
     /**
      * @param args the command line arguments

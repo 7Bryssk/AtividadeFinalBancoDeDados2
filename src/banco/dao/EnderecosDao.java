@@ -8,6 +8,7 @@ package banco.dao;
 import banco.entidade.Dadosgerais;
 import banco.entidade.Enderecos;
 import banco.entidade.Enderecos;
+import banco.entidade.Telefones;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -25,7 +28,7 @@ public class EnderecosDao implements Dao<Enderecos>{
     private static final String GET_BY_ID = "SELECT * FROM enderecos WHERE idEndereco = ?";
     private static final String GET_ALL = "SELECT * FROM enderecos";
     private static final String INSERT = "INSERT INTO enderecos (numero, rua, bairro, cidade, complemento, inativo, idDadoGeral) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE enderecos SET numero = ?, rua = ?, bairro = ?, cidade = ?, complemento = ?, inativo = ?, idDadoGeral = ?,  WHERE idEndereco = ?";
+    private static final String UPDATE = "UPDATE enderecos SET numero = ?, rua = ?, bairro = ?, cidade = ?, complemento = ?, inativo = ?, idDadoGeral = ?  WHERE idEndereco = ?";
     private static final String DELETE = "DELETE FROM enderecos WHERE idEndereco = ?";
 
     public EnderecosDao() {
@@ -45,6 +48,7 @@ public class EnderecosDao implements Dao<Enderecos>{
                 + "   cidade                    VARCHAR(50),"
                 + "   complemento               VARCHAR(50),"
                 + "   inativo                   TINYINT(4),"
+                + "   idDadoGeral               INTEGER,"
                 + "   FOREIGN KEY (idDadoGeral) REFERENCES dadosgerais(idDadoGeral),"
                 + "   PRIMARY KEY (idEndereco))";
 
@@ -213,6 +217,53 @@ public class EnderecosDao implements Dao<Enderecos>{
         } finally {
             close(conn, stmt, null);
         }
+    }
+    
+    public TableModel getTabelaEnderecos(int idDadoGeral) {
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        modelo.addColumn("Código");
+        modelo.addColumn("Cidade");
+        modelo.addColumn("Bairro");
+        modelo.addColumn("Rua");
+        modelo.addColumn("Número");
+        modelo.addColumn("Complemento");
+
+        List<Enderecos> lista = new ArrayList<>();
+        Connection conn = DbConnection.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM enderecos t WHERE t.idDadoGeral = ? and t.inativo='false'");
+            stmt.setInt(1, idDadoGeral);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(getEnderecoFromRS(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao obter Endereços.", e);
+        } finally {
+            close(conn, stmt, rs);
+        }
+
+        for (Enderecos endereco : lista) {
+
+            Object[] linha = {
+                endereco.getIdEnderecos(),
+                endereco.getCidade(),
+                endereco.getBairro(),
+                endereco.getRua(),
+                endereco.getNumero(),
+                endereco.getComplemento()
+            };
+
+            modelo.addRow(linha);
+
+        }
+        return modelo;
     }
     
 }

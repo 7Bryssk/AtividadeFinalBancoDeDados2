@@ -11,6 +11,7 @@
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/entidade/Estabelecimentos.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/entidade/Dadosgerais.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/Telas/TelaCadastro.java</file>
+            <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/entidade/Enderecos.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/Telas/TelaLogin.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/dao/EmailsDao.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/Telas/TelaCadastroEmpresa.java</file>
@@ -19,6 +20,7 @@
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/Telas/TelaTelefones.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/Telas/TelaPrincipal.java</file>
             <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/dao/UsuariosDao.java</file>
+            <file>file:/C:/Users/Patty/Desktop/AtividadeFinalBancoDeDados2/src/banco/Telas/TelaEnderecos.java</file>
         </group>
     </open-files>
 </project-private>
