@@ -22,10 +22,11 @@ public class TelaCadastro extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadastro
      */
-    Usuarios usuario = new Usuarios();
-    UsuariosDao usuDao = new UsuariosDao();
+    
     Dadosgerais dadosGerais = new Dadosgerais();
     DadosGeraisDao dgDao = new DadosGeraisDao();
+    Usuarios usuario = new Usuarios();
+    UsuariosDao usuDao = new UsuariosDao();
 
     public TelaCadastro(int id) {
         initComponents();
